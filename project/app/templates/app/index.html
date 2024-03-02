@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Media</title>
+</head>
+<body>
+    <h2>Uploaded Images</h2>
+    <div>
+        {% for image in uploaded_images %}
+            <img src="{{ image.images.url }}" alt="Image" height="200px" width="200px">
+        {% endfor %}
+    </div>
+
+    <h2>Uploaded Videos</h2>
+    <div>
+        {% for video in uploaded_videos %}
+            <video controls height="200px" width="200px">
+                <source src="{{ video.images.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% endfor %}
+    </div>
+
+    <h2>Upload New Media</h2>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="images" multiple>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
