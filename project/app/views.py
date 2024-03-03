@@ -1,18 +1,28 @@
-from django.shortcuts import render, redirect
-from .models import Multiple
 
-def index(request):
+from django.shortcuts import render, redirect
+from .models import *
+
+
+def create_project(request):
     if request.method == 'POST':
-        images = request.FILES.getlist('images')
-        for image in images:
-            Multiple.objects.create(images=image)
-        return redirect('index')  # Redirect to the same page to avoid resubmission
-    else:
-        images = Multiple.objects.filter(images__icontains='.jpg') | \
-                 Multiple.objects.filter(images__icontains='.jpeg') | \
-                 Multiple.objects.filter(images__icontains='.png') | \
-                 Multiple.objects.filter(images__icontains='.gif')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        images = request.FILES.getlist('images')  # Access files from request.FILES
         
-        videos = Multiple.objects.exclude(images__icontains='.jpg').exclude(images__icontains='.jpeg').exclude(images__icontains='.png').exclude(images__icontains='.gif')
-        
-        return render(request, 'app/index.html', {'uploaded_images': images, 'uploaded_videos': videos})
+        project = Project.objects.create(title=title, description=description)
+
+        # Loop through each uploaded image and save it along with the project
+        for img in images:
+            ProjectImage.objects.create(project=project, image=img)
+
+        return redirect('index')  # Redirect to the appropriate URL after saving
+    return render(request, 'app/create.html')  # Correct the template path
+
+
+
+def index(request):  
+    projects = Project.objects.all()
+    context ={
+        "projects":projects,
+        }
+    return render(request,'app/index.html', context)

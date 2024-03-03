@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Multiple
-# Register your models here.
+from .models import *
 
-admin.site.register(Multiple)
+# Register your models here.
+admin.site.register(Project)
+admin.site.register(ProjectImage)

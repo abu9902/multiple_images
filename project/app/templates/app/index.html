@@ -1,33 +1,57 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uploaded Media</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        {% comment %} .carousel-item {
+            height: 500pxpx; /* Adjust the height as needed */
+            width: 500px; /* Adjust the width as needed */
+            object-fit: cover; /* Maintain aspect ratio and fill the space */
+        } {% endcomment %}
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%; /* Adjust the width of the slide control buttons */
+        }
+    </style>
 </head>
+
 <body>
-    <h2>Uploaded Images</h2>
-    <div>
-        {% for image in uploaded_images %}
-            <img src="{{ image.images.url }}" alt="Image" height="200px" width="200px">
-        {% endfor %}
+    <center>
+        
+    {% for project in projects %}
+    <div id="carouselExample{{ forloop.counter }}" class="carousel slide" data-bs-ride="carousel" style="height:350px; width:350px;">
+        <div class="carousel-inner">
+            {% for project_image in project.projectimage_set.all %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img class="d-block w-100 carousel-image" src="{{ project_image.image.url }}" alt="project image" height="350px" width="250px">
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample{{ forloop.counter }}"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample{{ forloop.counter }}"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
+    <br>
+    {% endfor %}
 
-    <h2>Uploaded Videos</h2>
-    <div>
-        {% for video in uploaded_videos %}
-            <video controls height="200px" width="200px">
-                <source src="{{ video.images.url }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        {% endfor %}
-    </div>
-
-    <h2>Upload New Media</h2>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="images" multiple>
-        <button type="submit">Upload</button>
-    </form>
+</center>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    
 </body>
+
 </html>
